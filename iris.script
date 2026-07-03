@@ -1,21 +1,16 @@
-       ;do $System.OBJ.LoadDir("/opt/irisbuild/src","ck",,1)
-
     zn "%SYS"
     Do ##class(Security.Users).UnExpireUserPasswords("*")
-    ;
+	;; setup SQLgateway to mysql 
     set gty=##class(%SQLConnection).%New()
-    set gty.Name="postgres"
-    set gty.URL="jdbc:postgresql://postgres:5432/"
-    set gty.Usr="postgres"
-    set gty.pwd="postgres"
-    set gty.classpath="/opt/irisapp/jdbc/postgresql-42.3.1.jar"
-    set gty.driver="org.postgresql.Driver"
+    set gty.Name="mysql"
+    set gty.driver="com.mysql.cj.jdbc.Driver"
+    set gty.Usr="user"
+    set gty.pwd="password"
+    set gty.URL="jdbc:mysql://mysql:3306/db"
+    set gty.classpath="/opt/irisbuild/jdbc/mysql-connector-j-9.7.0.jar"
     set gty.isJDBC=1
     set sc=gty.%Save()
-    ZWRITE gty,sc
-    ;
-    ; zpm "install iterm"
+    ZWRITE gty,sc	
+    ;;
     zn "USER"
-    ; zpm "install webterminal"
     halt
-
