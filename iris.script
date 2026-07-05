@@ -1,18 +1,16 @@
-    zn "%SYS"
+   zn "%SYS"
     Do ##class(Security.Users).UnExpireUserPasswords("*")
 	;; setup SQLgateway to mssql 
     set gty=##class(%SQLConnection).%New()
-    set gty.Name="mssql"
-    set gty.Usr="SA"
-    set gty.pwd="MSSQLServer@2019"
-    set gty.driver="com.microsoft.sqlserver.jdbc.SQLServerDriver"
-    set gty.URL="jdbc:sqlserver://mssql:1433;encrypt=false;databaseName=AdventureWorks" 
-    set gty.classpath="/opt/irisbuild/jdbc/mssql-jdbc-13.4.0.jre11.jar"
+    set gty.Name="ibmDB2"
+    set gty.Usr="db2inst1"
+    set gty.pwd="password"
+    set gty.driver="com.ibm.db2.jcc.DB2Driver"
+	set gty.URL="jdbc:db2://db2:50000/sample"
+    set gty.classpath="/opt/irisbuild/jdbc/db2jcc4.jar"
     set gty.isJDBC=1
     set sc=gty.%Save()
     ZWRITE gty,sc	
     ;;
     zn "USER"
     halt
-
-;; user=SA;password='MSSQLServer@2019';databaseName=AdventureWorks;
