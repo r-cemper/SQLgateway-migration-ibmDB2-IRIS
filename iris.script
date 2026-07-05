@@ -6,7 +6,7 @@
     set gty.Usr="SA"
     set gty.pwd="MSSQLServer@2019"
     set gty.driver="com.microsoft.sqlserver.jdbc.SQLServerDriver"
-    set gty.URL="jdbc:sqlserver://mssql:1433;encrypt=false;databaseName=msdb"
+    set gty.URL="jdbc:sqlserver://mssql:1433;encrypt=false;databaseName=AdventureWorks" 
     set gty.classpath="/opt/irisbuild/jdbc/mssql-jdbc-13.4.0.jre11.jar"
     set gty.isJDBC=1
     set sc=gty.%Save()
