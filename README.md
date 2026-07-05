@@ -1,13 +1,13 @@
 
-# SQLgateway-migration-MSsql-IRIS #  
-Sample repository to show how to migrate from MSsqlserver to InterSystems IRIS    
+# SQLgateway-migration-ibmDB2-IRIS #  
+Sample repository to show how to migrate from IBM DB2server to InterSystems IRIS    
 **using SQLgateway** in contrast to using an external tool as DBeaver or CloudBeaver or similar. 
 ### Warning ###
 This is just JDBC/Java and IRIS with ISOS and SQL 
 - no AI, no Python, no other magic
  
 ## Credits ##
-Git>Hub package [migration-mssql-iris](https://github.com/yurimarx/migration-mssql-iris)
+Git>Hub package [migration-db2-iris](https://github.com/yurimarx/migration-db2-iris)
 provided by [YURI MARX PEREIRA GOMES](https://openexchange.intersystems.com/user/YURI%20MARX%20PEREIRA%20GOMES/QKGV1uPuZml09uNsC8bNKcRQj8)   
     - Special thanks as this was an excellent base to start off.  
 And the [official documentation on SQLgateway](https://docs.intersystems.com/iris20261/csp/docbook/Doc.View.cls?KEY=BSQG_overview)  
@@ -18,7 +18,7 @@ Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installi
 ## Installation 
 Clone/git pull the repo into any local directory
 ```
-git https://github.com/r-cemper/SQLgateway-migration-mssql-IRIS.git
+git https://github.com/r-cemper/SQLgateway-migration-ibmDB2-IRIS.git
 ```
 1. Build
 ```
@@ -29,13 +29,14 @@ docker-compose build
 docker-compose up
 ```
   - Wait for confirmation from your containers container:  **ready to accept connections**
+  - The first pull for DB2 may take quite some time for the upload
 
-3.   **Connection to MSsql**: 
-        - host: container mssql 
-        - database: AdventureWorks 
-        - port: 1433 
-        - username: SA
-        - password: MSSQLServer@2019
+3.   **Connection to ibmDB2**: 
+        - host: container db2 
+        - database: sample 
+        - port: 500000 
+        - username: db2inst1
+        - password: password
 4.   **Connection to IRIS**: 
         - host: localhost 
         - namespace: user 
@@ -53,46 +54,41 @@ SMP is available here
 All migration actions can be executed directly from SMP.   
 1. Verify the gateway connection in    
    SMP> Administration> Configuration> Connectivity> SqlGateway_Configuration    
- ![](https://raw.githubusercontent.com/r-cemper/SQLgateway-migration-mssql-IRIS/master/docs/gty01.jpg) 
-   - To test Connection click **edit** for connection **mssql**     
+ ![](https://raw.githubusercontent.com/r-cemper/SQLgateway-migration-ibmDB2-IRIS/master/docs/gty01.jpg) 
+   - To test Connection click **edit** for connection **ibmDB2**     
    - verify  **Connection successful**      
    - Be patient at this point. Some DB containers take quite some time to talk to you.   
      wait a little bit, reload the page in browser and try the test again. 
-   - as you talk to an SQLserver you may access also other available DBs
-     by modifying parameter **databaseName=anyDB;**
    
 2. Identifying the source tables. In SMP > Change to Namespace USER   
   then step to SMP >Explorers >SQL >Wizards > Data Migration   
-  ![](https://raw.githubusercontent.com/r-cemper/SQLgateway-migration-mssql-IRIS/master/docs/gty04.jpg)
+  ![](https://raw.githubusercontent.com/r-cemper/SQLgateway-migration-ibmDB2-IRIS/master/docs/gty04.jpg)
   
 3. Set required import parameters  
  
   -  Destination Namespace = USER  
   -  Type = TABLE   
-  -  Select a SQL Gateway connection: = mssql  ; now the first connection is established and you select 
+  -  Select a SQL Gateway connection: = ibmDB2  ; now the first connection is established and you select 
   -  and you select Schema = [your choice ? ]
-  -  Tables to migrate = all   
-
-4. Identify target but you may change the schema to whatever you like   
-    starting with **dc_**
-  - don't forget to click **change all**    
-  - we migrate Definitions and Data so both sides are selected   
+  -  Tables to migrate:  The example has a lot of cross-references 
+     It might be clever to load tables in their logical order to reduce errors
+     Also, loading definitions first and data later would improve success 
+  
+4. Identifying new targets is possible, but may cause conflicts in cross-references   
 
 5. Skipping special settings, we use defaults to start the task in background      
-  ![](https://raw.githubusercontent.com/r-cemper/SQLgateway-migration-mssql-IRIS/master/docs/gty07.jpg) 
+  ![](https://raw.githubusercontent.com/r-cemper/SQLgateway-migration-ibmDB2-IRIS/master/docs/gty07.jpg) 
   
-6. Now we check the results and see everything was working without Errors
+6. Now check the results and see if everything was working without Errors
   You might see errors if tables depend on content not yet migrated.   
   And wait for completions until the status shows **Done** 
   
-7. We terminate the Migration Wizard and return to normal table view filtered by **dc\***
-  
-  All tables are visible and show meaningful columns
+7. We terminate the Migration Wizard and return to normal table view 
+   All tables are visible and show meaningful columns
   
 8. Selecting a table and clicking on **OpenTable** shows reasonable contents   
   
 9. A look into the related generated Class Definitions confirms the result and successful completion.
 
-
-  [Article on DC](https://community.intersystems.com/post/sqlgateway-migration-MSsql-iris)    
-  [Data source description by Yuri Marx](https://community.intersystems.com/post/data-migration-tool-part-iv-microsoft-sql-server-iris)
+  [Article on DC](https://community.intersystems.com/post/sqlgateway-migration-ibmDB2-iris)    
+  [Data source description by Yuri Marx](https://community.intersystems.com/post/data-migration-tool-part-iii-db2-iris)
