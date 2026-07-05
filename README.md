@@ -18,7 +18,7 @@ Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installi
 ## Installation 
 Clone/git pull the repo into any local directory
 ```
-git https://github.com/r-cemper/SQLgateway-migration-mysql-IRIS.git
+git https://github.com/r-cemper/SQLgateway-migration-mssql-IRIS.git
 ```
 1. Build
 ```
@@ -32,7 +32,7 @@ docker-compose up
 
 3.   **Connection to MSsql**: 
         - host: container mssql 
-        - database: msdb 
+        - database: AdventureWorks 
         - port: 1433 
         - username: SA
         - password: MSSQLServer@2019
@@ -53,33 +53,33 @@ SMP is available here
 All migration actions can be executed directly from SMP.   
 1. Verify the gateway connection in    
    SMP> Administration> Configuration> Connectivity> SqlGateway_Configuration    
- ![](https://raw.githubusercontent.com/r-cemper/SQLgateway-migration-mysql-IRIS/master/docs/gty01.jpg) 
-   - To test Connection click **edit** for cnection **mysql**     
+ ![](https://raw.githubusercontent.com/r-cemper/SQLgateway-migration-mssql-IRIS/master/docs/gty01.jpg) 
+   - To test Connection click **edit** for connection **mssql**     
    - verify  **Connection successful**      
    - Be patient at this point. Some DB containers take quite some time to talk to you.   
      wait a little bit, reload the page in browser and try the test again. 
-   - as you tsl to SQLserver you may access also other available DBs
+   - as you talk to an SQLserver you may access also other available DBs
      by modifying parameter **databaseName=anyDB;**
-     The previously described database AdventureWorks seems not to be available anymore.
    
 2. Identifying the source tables. In SMP > Change to Namespace USER   
   then step to SMP >Explorers >SQL >Wizards > Data Migration   
-  ![](https://raw.githubusercontent.com/r-cemper/SQLgateway-migration-mysql-IRIS/master/docs/gty04.jpg)
+  ![](https://raw.githubusercontent.com/r-cemper/SQLgateway-migration-mssql-IRIS/master/docs/gty04.jpg)
   
 3. Set required import parameters  
  
-  -  Destination Namespace   
+  -  Destination Namespace = USER  
   -  Type = TABLE   
   -  Select a SQL Gateway connection: = mssql  ; now the first connection is established and you select 
-  -  Schema = [null schema]
+  -  and you select Schema = [your choice ? ]
   -  Tables to migrate = all   
 
 4. Identify target but you may change the schema to whatever you like   
+    starting with **dc_**
   - don't forget to click **change all**    
   - we migrate Definitions and Data so both sides are selected   
 
 5. Skipping special settings, we use defaults to start the task in background      
-  ![](https://raw.githubusercontent.com/r-cemper/SQLgateway-migration-mysql-IRIS/master/docs/gty07.jpg) 
+  ![](https://raw.githubusercontent.com/r-cemper/SQLgateway-migration-mssql-IRIS/master/docs/gty07.jpg) 
   
 6. Now we check the results and see everything was working without Errors
   You might see errors if tables depend on content not yet migrated.   
@@ -87,7 +87,7 @@ All migration actions can be executed directly from SMP.
   
 7. We terminate the Migration Wizard and return to normal table view filtered by **dc\***
   
-  All 8 tables are visible and show meaningful columns
+  All tables are visible and show meaningful columns
   
 8. Selecting a table and clicking on **OpenTable** shows reasonable contents   
   
